@@ -1,40 +1,46 @@
+let player = 0;
+let computer = 0;
+
+const btnRock = document.getElementById("rock");
+const btnPaper = document.getElementById("paper");
+const btnScissors = document.getElementById("scissors");
+const playerScore = document.getElementById("player-score");
+const computerScore = document.getElementById("computer-score");
+const currentGame = document.getElementById("currentGame");
+const finalGame = document.getElementById("finalGame");
+
+btnRock.addEventListener("click", () => handleButtonClick("Rock"));
+btnPaper.addEventListener("click", () => handleButtonClick("Paper"));
+btnScissors.addEventListener("click", () => handleButtonClick("Scissors"));
+
+function handleButtonClick(playerSelection) {
+  const computerSelection = getComputerChoice();
+  const result = playRound(playerSelection, computerSelection);
+  playerScore.textContent = `Your Score: ${player}`;
+  computerScore.textContent = `Computer Score: ${computer}`;
+  if (player === 5) finalGame.textContent = "Game finished. You win!";
+  if (computer === 5) finalGame.textContent = "Game finished. Computer wins!";
+  console.log(result);
+}
+
 function getComputerChoice() {
   let computerChoice = Math.floor(Math.random() * 3) + 1;
   if (computerChoice === 1) return `Rock`;
   else if (computerChoice === 2) return `Paper`;
-  else {
-    return `Scissors`;
-  }
+  else return `Scissors`;
 }
 
 function playRound(playerSelection, computerSelection) {
-  playerSelection =
-    playerSelection[0].toUpperCase() + playerSelection.slice(1).toLowerCase();
-  if (playerSelection === computerSelection) return "TIES";
+  if (playerSelection === computerSelection) currentGame.textContent = "TIES";
   else if (
     (playerSelection === "Rock" && computerSelection === "Scissors") ||
     (playerSelection === "Scissors" && computerSelection === "Paper") ||
     (playerSelection === "Paper" && computerSelection === "Rock")
   ) {
-    return `You Win! ${playerSelection} beats ${computerSelection}`;
+    currentGame.textContent = `You Win! ${playerSelection} beats ${computerSelection}`;
+    return (player += 1);
   } else {
-    return `You Lose! ${computerSelection} beats ${playerSelection}`;
+    currentGame.textContent = `You Lose! ${computerSelection} beats ${playerSelection}`;
+    return (computer += 1);
   }
 }
-
-function game() {
-  let counter = 0;
-  while (counter < 5) {
-    const playerSelection = prompt(
-      "Please choose one: Rock, Papper, or Scissors"
-    );
-    const computerSelection = getComputerChoice();
-    console.log(playRound(playerSelection, computerSelection));
-    counter += 1;
-  }
-  return counter;
-}
-
-// console.log(playRound(playerSelection, computerSelection));
-const fiveRounds = game();
-console.log(fiveRounds);
